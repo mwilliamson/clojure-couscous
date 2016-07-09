@@ -1,4 +1,4 @@
-(ns couscous.frontends.java.ast.builders
+(ns couscous.test.frontends.java.ast.builders
   (:require
     [couscous.frontends.java.ast :as java]
     [plumbing.core :refer [defnk]]))
