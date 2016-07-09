@@ -3,15 +3,15 @@
 
 (defrecord Literal [value])
 
-(defrecord ClassDeclaration [name, type-params])
+(defrecord ClassDeclaration [name type-params super-types])
 
-(defnk class-decl [name {type-params []}]
-  (->ClassDeclaration name type-params))
+(defnk class-decl [name {type-params []} {super-types []}]
+  (->ClassDeclaration name type-params super-types))
 
-(defrecord InterfaceDeclaration [name type-params])
+(defrecord InterfaceDeclaration [name type-params super-types])
 
-(defnk interface-decl [name {type-params []}]
-  (->InterfaceDeclaration name type-params))
+(defnk interface-decl [name {type-params []} {super-types []}]
+  (->InterfaceDeclaration name type-params super-types))
 
 (defrecord EnumDeclaration [name fields])
 

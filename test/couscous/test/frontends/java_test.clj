@@ -38,8 +38,19 @@
           (m/has-entry :type-params ["T" "U"])
           (parse-string "class X<T, U> {}"))))
 
-    (testing "interface parsing:"
-      (testing "parse empty class in declared package"
+    (testing "super types:"
+      (testing "empty when extending Object"
         (m/is
-          (m/= (java/interface-decl {:name "com.example.X"}))
-          (parse-string "package com.example; interface X {}"))))))
+          (m/has-entry :super-types [])
+          (parse-string "class X extends Object {}")))
+
+      (testing "includes implemented interfaces"
+        (m/is
+          (m/has-entry :super-types ["java.util.function.IntSupplier"])
+          (parse-string "class X implements java.util.function.IntSupplier { public int getAsInt() { return 0; } }")))))
+
+  (testing "interface parsing:"
+    (testing "parse empty interface in declared package"
+      (m/is
+        (m/= (java/interface-decl {:name "com.example.X"}))
+        (parse-string "package com.example; interface X {}")))))

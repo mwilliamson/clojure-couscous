@@ -24,8 +24,8 @@
     (.setSource parser (.toCharArray source))
     (.createAST parser nil)))
 
-(defn- qualified-name [declaration]
-  (.getQualifiedName (.resolveBinding declaration)))
+(defn- qualified-name [binding]
+  (.getQualifiedName binding))
 
 (defn- read-enum-field [field]
   (.getIdentifier (.getName field)))
@@ -33,18 +33,24 @@
 (defn- read-enum-declaration [declaration]
   (ast/enum-decl
     {
-     :name (qualified-name declaration),
+     :name (qualified-name (.resolveBinding declaration)),
      :fields (mapv read-enum-field (.enumConstants declaration))}))
 
 (defn- read-type-parameters [type-parameters]
   (mapv (fn [param] (.getName param)) type-parameters))
 
+(defn- read-type-binding [type-binding]
+  (qualified-name type-binding))
+
 (defn- read-type-declaration [declaration]
-  (let [name (qualified-name declaration)
-        type-params (read-type-parameters (.getTypeParameters (.resolveBinding declaration)))
+  (let [binding (.resolveBinding declaration)
+        name (qualified-name binding)
+        type-params (read-type-parameters (.getTypeParameters binding))
+        super-types (mapv read-type-binding (.getInterfaces binding))
         properties {
                     :name name
-                    :type-params type-params}]
+                    :type-params type-params
+                    :super-types super-types}]
     (if (.isInterface declaration)
       (ast/interface-decl properties)
       (ast/class-decl properties))))
