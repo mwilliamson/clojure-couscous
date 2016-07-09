@@ -31,12 +31,12 @@
   (.getIdentifier (.getName field)))
 
 (defn- read-enum-declaration [declaration]
-  (ast/enum {
+  (ast/map->EnumDeclaration {
              :name (qualified-name declaration),
              :fields (map read-enum-field (.enumConstants declaration))}))
 
 (defn- read-type-declaration [declaration]
-  (ast/class {
+  (ast/map->ClassDeclaration {
               :name (qualified-name declaration)}))
 
 

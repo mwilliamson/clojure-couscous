@@ -1,14 +1,7 @@
-(ns couscous.frontends.java.ast
-  (:require [plumbing.core :refer [defnk]]))
+(ns couscous.frontends.java.ast)
 
 (defrecord Literal [value])
 
-(defrecord JavaClass [name])
+(defrecord ClassDeclaration [name])
 
-(defrecord JavaEnum [name members])
-
-(defnk class [name]
-  (map->JavaClass {:name name}))
-
-(defnk enum [name fields]
-  (map->JavaEnum {:name name, :fields fields}))
+(defrecord EnumDeclaration [name members])

@@ -2,7 +2,7 @@
   (:require
     [clojure.test :refer [deftest testing is]]
     [couscous.frontends.java :refer [parse]]
-    [couscous.frontends.java.ast :as java]))
+    [couscous.frontends.java.ast.builders :as java]))
 
 (deftest java-parser-tests
   (testing "parse empty class in default package"
