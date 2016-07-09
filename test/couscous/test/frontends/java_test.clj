@@ -1,6 +1,6 @@
 (ns couscous.test.frontends.java-test
   (:require
-    [clojure.test :refer [deftest testing]]
+    [clojure.test :refer [deftest testing is]]
     [matcha :as m]
     [couscous.frontends.java :refer [parse]]
     [couscous.frontends.java.ast :as java]))
@@ -8,6 +8,9 @@
 (defn- parse-string [source] (parse "" source))
 
 (deftest java-parser-tests
+  (testing "parse failure"
+    (is (thrown? RuntimeException (parse-string "class X extends IntSupplier {}"))))
+
   (testing "parse enum"
     (m/is
       (m/= (java/enum-decl {:name "X", :fields ["A", "B", "C"]}))

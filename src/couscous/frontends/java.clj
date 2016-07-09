@@ -57,7 +57,19 @@
       EnumDeclaration (read-enum-declaration declaration)
       (throw (UnsupportedOperationException. (str "Unsupported type declaration: " (type declaration)))))))
 
+(defn- describe-error [error]
+  (str
+    "File: " (String/copyValueOf (.getOriginatingFileName error)) "\n"
+    "Line number: " (.getSourceLineNumber error) "\n"
+    (.getMessage error)))
+
+(defn- describe-errors [errors]
+  (clojure.string/join "\n\n" (map describe-error errors)))
 
 (defn parse [name source]
-  (let [compilation-unit (eclipse-parse name source)]
-    (read-compilation-unit compilation-unit)))
+  (let [compilation-unit (eclipse-parse name source)
+        errors (filter (fn [problem] (.isError problem)) (.getProblems compilation-unit))]
+    (if (empty? errors)
+      (read-compilation-unit compilation-unit)
+      (throw (RuntimeException. (str "Errors during parsing: " (describe-errors errors)))))))
+
