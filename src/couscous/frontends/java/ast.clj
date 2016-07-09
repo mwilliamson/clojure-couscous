@@ -8,6 +8,11 @@
 (defnk class-decl [name {type-params []}]
   (->ClassDeclaration name type-params))
 
+(defrecord InterfaceDeclaration [name type-params])
+
+(defnk interface-decl [name {type-params []}]
+  (->InterfaceDeclaration name type-params))
+
 (defrecord EnumDeclaration [name fields])
 
 (defnk enum-decl [name fields]

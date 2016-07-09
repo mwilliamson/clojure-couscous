@@ -40,11 +40,14 @@
   (mapv (fn [param] (.getName param)) type-parameters))
 
 (defn- read-type-declaration [declaration]
-  (ast/class-decl
-    {
-     :name (qualified-name declaration)
-     :type-params (read-type-parameters (.getTypeParameters (.resolveBinding declaration)))}))
-
+  (let [name (qualified-name declaration)
+        type-params (read-type-parameters (.getTypeParameters (.resolveBinding declaration)))
+        properties {
+                    :name name
+                    :type-params type-params}]
+    (if (.isInterface declaration)
+      (ast/interface-decl properties)
+      (ast/class-decl properties))))
 
 
 (defn- read-compilation-unit [compilation-unit]
