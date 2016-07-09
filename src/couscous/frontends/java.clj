@@ -31,13 +31,19 @@
   (.getIdentifier (.getName field)))
 
 (defn- read-enum-declaration [declaration]
-  (ast/map->EnumDeclaration {
-             :name (qualified-name declaration),
-             :fields (map read-enum-field (.enumConstants declaration))}))
+  (ast/enum-decl
+    {
+     :name (qualified-name declaration),
+     :fields (mapv read-enum-field (.enumConstants declaration))}))
+
+(defn- read-type-parameters [type-parameters]
+  (mapv (fn [param] (.getName param)) type-parameters))
 
 (defn- read-type-declaration [declaration]
-  (ast/map->ClassDeclaration {
-              :name (qualified-name declaration)}))
+  (ast/class-decl
+    {
+     :name (qualified-name declaration)
+     :type-params (read-type-parameters (.getTypeParameters (.resolveBinding declaration)))}))
 
 
 

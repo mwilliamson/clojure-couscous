@@ -6,4 +6,5 @@
   :dependencies [
                  [org.clojure/clojure "1.8.0"]
                  [org.eclipse.jdt/org.eclipse.jdt.core "3.10.0"]
-                 [prismatic/plumbing "0.5.3"]])
+                 [prismatic/plumbing "0.5.3"]
+                 [matcha "0.1.0"]])
